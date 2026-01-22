@@ -546,16 +546,16 @@
       display: flex;
     }
 
-    /* Input Grid */
+    /* Input Grid - Single Column */
     .input-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      max-width: 600px;
     }
 
     @media (min-width: 640px) {
       .input-grid {
-        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
       }
     }
@@ -568,59 +568,80 @@
     .input-group label {
       font-weight: 600;
       color: var(--nc-vulcano);
-      margin-bottom: 0.375rem;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
 
-    @media (min-width: 640px) {
-      .input-group label {
-        margin-bottom: 0.5rem;
-        font-size: 0.9rem;
-      }
+    .slider-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
-    .input-wrapper {
-      position: relative;
-    }
-
-    .input-group input {
-      width: 100%;
-      padding: 0.75rem 0.875rem;
-      border: 2px solid var(--nc-ash);
-      border-radius: 10px;
-      font-size: 1rem;
-      font-family: inherit;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      background: var(--nc-white);
+    .slider-value {
+      min-width: 80px;
+      font-size: 1.25rem;
+      font-weight: 700;
       color: var(--nc-vulcano);
+      text-align: right;
     }
 
     @media (min-width: 640px) {
-      .input-group input {
-        padding: 0.875rem 1rem;
+      .slider-value {
+        min-width: 100px;
+        font-size: 1.5rem;
       }
     }
 
-    .input-group input:focus {
+    .input-group input[type="range"] {
+      flex: 1;
+      height: 8px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--nc-gray-200);
+      border-radius: 4px;
       outline: none;
-      border-color: var(--nc-pine);
-      box-shadow: 0 0 0 3px rgba(43, 153, 168, 0.15);
+      cursor: pointer;
+    }
+
+    .input-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: var(--nc-pine);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(43, 153, 168, 0.4);
+    }
+
+    .input-group input[type="range"]::-webkit-slider-thumb:hover {
+      background: var(--nc-pine-dark);
+      transform: scale(1.1);
+    }
+
+    .input-group input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: var(--nc-pine);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(43, 153, 168, 0.4);
+    }
+
+    .input-group input[type="range"]::-moz-range-thumb:hover {
+      background: var(--nc-pine-dark);
+      transform: scale(1.1);
     }
 
     .input-hint {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: var(--nc-gray-500);
-      margin-top: 0.375rem;
+      margin-top: 0.5rem;
       font-weight: 500;
       line-height: 1.4;
-    }
-
-    @media (min-width: 640px) {
-      .input-hint {
-        font-size: 0.75rem;
-        margin-top: 0.5rem;
-      }
     }
 
     .input-hint span {
@@ -1874,8 +1895,9 @@
               <span class="tooltip-content"><strong>Where to find:</strong> Check your ERP, PIM system, or product database. Count unique SKUs including all variants (size, color).</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="products" value="5000" min="0" placeholder="e.g. 5000" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="products" value="5000" min="0" max="100000" step="5000" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="products-value">5,000</span>
           </div>
           <div class="input-hint"><span>5,000</span> included &bull; €59 per 5,000 extra</div>
         </div>
@@ -1886,8 +1908,9 @@
               <span class="tooltip-content"><strong>Where to find:</strong> Check your analytics or order reports. Count completed orders across all channels (B2C + B2B + store orders).</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="conversions" value="1000" min="0" placeholder="e.g. 3000" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="conversions" value="1000" min="0" max="20000" step="500" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="conversions-value">1,000</span>
           </div>
           <div class="input-hint"><span>1,000</span> included &bull; €115 per 500 extra</div>
         </div>
@@ -1898,8 +1921,9 @@
               <span class="tooltip-content"><strong>What this means:</strong> Peak requests from external systems (ERP, POS, WMS) in a 15-minute window. Ask your IT team about integration traffic. <strong>Typical:</strong> 1,000-3,000 for mid-size operations.</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="apiCalls" value="1000" min="0" placeholder="e.g. 1000" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="apiCalls" value="1000" min="0" max="20000" step="1000" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="apiCalls-value">1,000</span>
           </div>
           <div class="input-hint"><span>1,000</span> included &bull; €39 per 1,000 extra</div>
         </div>
@@ -1910,8 +1934,9 @@
               <span class="tooltip-content"><strong>What to count:</strong> Warehouses, retail stores, fulfillment centers, and virtual locations (dropship suppliers) where inventory is tracked separately.</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="stockLocations" value="25" min="0" placeholder="e.g. 19" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="stockLocations" value="25" min="0" max="100" step="1" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="stockLocations-value">25</span>
           </div>
           <div class="input-hint"><span>25</span> included &bull; €19 per location extra</div>
         </div>
@@ -1922,8 +1947,9 @@
               <span class="tooltip-content"><strong>What to count:</strong> Number of language versions for your webshop (e.g., English, German, Dutch). Each language requires translated content.</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="languages" value="2" min="0" placeholder="e.g. 3" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="languages" value="2" min="0" max="20" step="1" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="languages-value">2</span>
           </div>
           <div class="input-hint"><span>2</span> included &bull; €59 per language extra</div>
         </div>
@@ -1934,8 +1960,9 @@
               <span class="tooltip-content"><strong>What to count:</strong> Team members who need access to the multix suite (product managers, order handlers, marketers, admins).</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="accounts" value="2" min="0" placeholder="e.g. 5" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="accounts" value="2" min="0" max="50" step="1" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="accounts-value">2</span>
           </div>
           <div class="input-hint"><span>2</span> included &bull; €115 per account extra</div>
         </div>
@@ -1946,8 +1973,9 @@
               <span class="tooltip-content"><strong>What to count:</strong> External sales channels like Amazon, eBay, Bol.com, Zalando where you want to sell your products.</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="marketplaces" value="0" min="0" placeholder="e.g. 2" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="marketplaces" value="0" min="0" max="50" step="5" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="marketplaces-value">0</span>
           </div>
           <div class="input-hint"><span>0</span> included &bull; €45 per 5 + €395 setup per block</div>
         </div>
@@ -1958,8 +1986,9 @@
               <span class="tooltip-content"><strong>What to count:</strong> Separate webshop frontends (different domains or brands). Most businesses need just 1 storefront.</span>
             </span>
           </div>
-          <div class="input-wrapper">
-            <input type="number" id="storefronts" value="1" min="0" placeholder="e.g. 1" oninput="calculate()">
+          <div class="slider-wrapper">
+            <input type="range" id="storefronts" value="1" min="0" max="20" step="1" oninput="updateSlider(this); calculate()">
+            <span class="slider-value" id="storefronts-value">1</span>
           </div>
           <div class="input-hint"><span>1</span> included &bull; No extra charge</div>
         </div>
@@ -2802,7 +2831,22 @@
       html2pdf().set(opt).from(pdfContent).save();
     }
 
-    // Initial calculation
+    function updateSlider(input) {
+      const valueSpan = document.getElementById(input.id + '-value');
+      if (valueSpan) {
+        valueSpan.textContent = parseInt(input.value).toLocaleString();
+      }
+    }
+
+    function initSliders() {
+      const sliders = document.querySelectorAll('input[type="range"]');
+      sliders.forEach(slider => {
+        updateSlider(slider);
+      });
+    }
+
+    // Initial calculation and slider init
+    initSliders();
     calculate();
   </script>
 </body>
