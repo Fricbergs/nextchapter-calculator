@@ -959,6 +959,7 @@
       grid-template-columns: 1fr;
       gap: 0.75rem;
       margin-bottom: 1.5rem;
+      align-items: stretch;
     }
 
     @media (min-width: 480px) {
@@ -983,6 +984,8 @@
       transition: all 0.3s ease;
       position: relative;
       background: var(--nc-white);
+      display: flex;
+      flex-direction: column;
     }
 
     @media (min-width: 640px) {
@@ -1104,14 +1107,13 @@
       text-align: left;
       border-top: 1px solid var(--nc-ash);
       padding-top: 0.75rem;
-      margin-top: 0.75rem;
+      margin-top: auto;
     }
 
     @media (min-width: 640px) {
       .comparison-details {
         font-size: 0.75rem;
         padding-top: 1rem;
-        margin-top: 1rem;
       }
     }
 
