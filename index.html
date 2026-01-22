@@ -1294,6 +1294,94 @@
       white-space: nowrap;
     }
 
+    /* Expandable card details */
+    .expand-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      background: var(--nc-gray-50);
+      border: none;
+      border-radius: 6px;
+      color: var(--nc-gray-500);
+      font-size: 0.6rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .expand-toggle:hover {
+      background: var(--nc-gray-100);
+      color: var(--nc-gray-700);
+    }
+
+    .expand-toggle svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .expand-toggle.expanded svg {
+      transform: rotate(180deg);
+    }
+
+    .card-assumptions {
+      display: none;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px dashed var(--nc-ash);
+      text-align: left;
+      font-size: 0.6rem;
+      color: var(--nc-gray-500);
+      line-height: 1.5;
+    }
+
+    @media (min-width: 1000px) {
+      .card-assumptions {
+        font-size: 0.65rem;
+      }
+    }
+
+    .card-assumptions.visible {
+      display: block;
+    }
+
+    .card-assumptions .assumption-title {
+      font-weight: 700;
+      color: var(--nc-gray-700);
+      margin-bottom: 0.375rem;
+      font-size: 0.65rem;
+    }
+
+    .card-assumptions ul {
+      margin: 0;
+      padding-left: 0.875rem;
+    }
+
+    .card-assumptions li {
+      margin-bottom: 0.25rem;
+    }
+
+    .card-assumptions .source {
+      font-style: italic;
+      color: var(--nc-gray-400);
+      margin-top: 0.375rem;
+      font-size: 0.55rem;
+    }
+
+    .card-assumptions .caveat {
+      background: rgba(255, 211, 55, 0.15);
+      border-left: 2px solid var(--nc-pineapple);
+      padding: 0.375rem 0.5rem;
+      margin-top: 0.5rem;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.55rem;
+    }
+
     /* Bar Chart */
     .bar-chart {
       margin: 1.5rem 0;
@@ -2199,6 +2287,22 @@
                 <span>Included</span>
               </div>
             </div>
+            <button class="expand-toggle" onclick="toggleAssumptions(this)">
+              Show assumptions
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="card-assumptions">
+              <div class="assumption-title">How we calculated this:</div>
+              <ul>
+                <li><strong>Setup ${formatCurrency(nc5Year.setup)}:</strong> Standard prebuilt package implementation fee. Includes onboarding, training, and 8-week delivery by NextChapter team.</li>
+                <li><strong>License ${formatCurrency(nc5Year.license)}:</strong> €1,999/month × 60 months. Fixed pricing regardless of GMV or transaction volume.</li>
+                <li><strong>Hosting:</strong> Cloud infrastructure fully included. No separate hosting costs.</li>
+                <li><strong>Maintenance:</strong> Platform updates, security patches, and technical support included in license.</li>
+              </ul>
+              <div class="source">Based on NextChapter Prebuilt Packages pricing (Oct 2025)</div>
+            </div>
           </div>
 
           <div class="comparison-card">
@@ -2224,6 +2328,23 @@
                 <span>Apps/Plugins</span>
                 <span>${formatCurrency(shopify5Year.apps)}</span>
               </div>
+            </div>
+            <button class="expand-toggle" onclick="toggleAssumptions(this)">
+              Show assumptions
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="card-assumptions">
+              <div class="assumption-title">How we calculated this:</div>
+              <ul>
+                <li><strong>Setup ${formatCurrency(shopify5Year.setup)}:</strong> Theme customization, data migration, and agency implementation. Shopify Plus requires certified partners.</li>
+                <li><strong>License ${formatCurrency(shopify5Year.license)}:</strong> €2,300/month × 60 months. Based on 3-year contract pricing. Can increase with GMV.</li>
+                <li><strong>Maintenance ${formatCurrency(shopify5Year.maintenance)}:</strong> €500/month agency retainer for ongoing changes and support.</li>
+                <li><strong>Apps ${formatCurrency(shopify5Year.apps)}:</strong> €750/month average. Shopify requires paid apps for features included natively in NextChapter (PIM, advanced OMS, B2B).</li>
+              </ul>
+              <div class="source">Based on Shopify Plus public pricing and agency market rates (2025)</div>
+              <div class="caveat">Note: Does not include 0.15-0.25% transaction fees on third-party payment gateways, which can add €10-50k+ over 5 years.</div>
             </div>
           </div>
 
@@ -2251,6 +2372,24 @@
                 <span>${formatCurrency(magento5Year.apps)}</span>
               </div>
             </div>
+            <button class="expand-toggle" onclick="toggleAssumptions(this)">
+              Show assumptions
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="card-assumptions">
+              <div class="assumption-title">How we calculated this:</div>
+              <ul>
+                <li><strong>Setup ${formatCurrency(magento5Year.setup)}:</strong> Custom development with no vendor support. Requires specialized Magento developers. Higher than SaaS due to complexity.</li>
+                <li><strong>License:</strong> Free open source software. No license fees.</li>
+                <li><strong>Hosting ${formatCurrency(magento5Year.hosting)}:</strong> €500/month for dedicated/cloud servers. Magento requires significant server resources.</li>
+                <li><strong>Dev/Maintenance ${formatCurrency(magento5Year.maintenance)}:</strong> €2,500/month for ongoing development, security patches, version upgrades, and bug fixes. No vendor support means you pay developers for everything.</li>
+                <li><strong>Extensions ${formatCurrency(magento5Year.apps)}:</strong> €400/month average for paid marketplace extensions.</li>
+              </ul>
+              <div class="source">Based on Magento agency market rates and hosting benchmarks (2025)</div>
+              <div class="caveat">Warning: Security vulnerabilities must be patched by your team. Major version upgrades (e.g., 2.4 to 2.5) can cost €20-50k+ in developer time.</div>
+            </div>
           </div>
 
           <div class="comparison-card">
@@ -2276,6 +2415,24 @@
                 <span>Plugins</span>
                 <span>${formatCurrency(woo5Year.plugins)}</span>
               </div>
+            </div>
+            <button class="expand-toggle" onclick="toggleAssumptions(this)">
+              Show assumptions
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="card-assumptions">
+              <div class="assumption-title">How we calculated this:</div>
+              <ul>
+                <li><strong>Setup ${formatCurrency(woo5Year.setup)}:</strong> WordPress theme + WooCommerce customization. Lower upfront cost but limited enterprise features.</li>
+                <li><strong>License:</strong> Free WordPress plugin. No license fees.</li>
+                <li><strong>Hosting ${formatCurrency(woo5Year.hosting)}:</strong> €200/month managed WordPress hosting. Adequate for small-medium stores.</li>
+                <li><strong>Dev/Maintenance ${formatCurrency(woo5Year.maintenance)}:</strong> €800/month for plugin updates, security, WordPress core updates, and customizations.</li>
+                <li><strong>Plugins ${formatCurrency(woo5Year.plugins)}:</strong> €150/month for premium plugins (subscriptions, B2B, advanced shipping, etc.).</li>
+              </ul>
+              <div class="source">Based on WordPress/WooCommerce agency rates and hosting costs (2025)</div>
+              <div class="caveat">Limitation: WooCommerce struggles with large catalogs (10,000+ SKUs) and high order volumes. Performance degrades significantly. Not recommended for enterprise B2B scenarios.</div>
             </div>
           </div>
         </div>
@@ -2330,19 +2487,32 @@
         ` : ''}
 
         <div class="assumptions">
-          <div class="assumptions-title">Comparison Assumptions</div>
+          <div class="assumptions-title">General Notes</div>
           <ul>
-            <li><strong>Shopify Plus:</strong> €2,300/mo license, €25k implementation, €750/mo apps, €500/mo agency support</li>
-            <li><strong>Magento Open Source:</strong> Free license, €75k implementation (no vendor support), €500/mo hosting, €2,500/mo dev/agency, €400/mo extensions</li>
-            <li><strong>WooCommerce:</strong> Free plugin, €25k implementation, €200/mo hosting, €800/mo dev support, €150/mo plugins. Note: Limited scalability for large catalogs.</li>
-            <li><strong>NextChapter:</strong> All-inclusive pricing with hosting, PIM, OMS and core features included</li>
-            <li>Open source platforms require ongoing developer resources for updates, security patches, and customizations</li>
-            <li>B2B functionality adds ~30% complexity cost for open source platforms (requires custom development)</li>
+            <li>Click "Show assumptions" on each card above for detailed calculation breakdown</li>
+            <li>All estimates based on 2025 market rates for mid-market e-commerce operations</li>
+            <li>B2B functionality adds ~30% complexity for platforms requiring custom development</li>
+            <li>Transaction fees, GMV-based pricing tiers, and currency conversion costs not included</li>
           </ul>
         </div>
       `;
 
       document.getElementById('comparison-container').innerHTML = compHtml;
+    }
+
+    // Toggle assumptions visibility
+    function toggleAssumptions(button) {
+      const card = button.closest('.comparison-card');
+      const assumptions = card.querySelector('.card-assumptions');
+
+      button.classList.toggle('expanded');
+      assumptions.classList.toggle('visible');
+
+      if (assumptions.classList.contains('visible')) {
+        button.innerHTML = `Hide assumptions <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>`;
+      } else {
+        button.innerHTML = `Show assumptions <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>`;
+      }
     }
 
     // Initial calculation
