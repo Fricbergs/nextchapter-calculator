@@ -1294,43 +1294,8 @@
       white-space: nowrap;
     }
 
-    /* Expandable card details */
-    .expand-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.25rem;
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      background: var(--nc-gray-50);
-      border: none;
-      border-radius: 6px;
-      color: var(--nc-gray-500);
-      font-size: 0.6rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
-    }
-
-    .expand-toggle:hover {
-      background: var(--nc-gray-100);
-      color: var(--nc-gray-700);
-    }
-
-    .expand-toggle svg {
-      width: 12px;
-      height: 12px;
-      transition: transform 0.2s ease;
-    }
-
-    .expand-toggle.expanded svg {
-      transform: rotate(180deg);
-    }
-
+    /* Card assumption details */
     .card-assumptions {
-      display: none;
       margin-top: 0.75rem;
       padding-top: 0.75rem;
       border-top: 1px dashed var(--nc-ash);
@@ -1344,10 +1309,6 @@
       .card-assumptions {
         font-size: 0.65rem;
       }
-    }
-
-    .card-assumptions.visible {
-      display: block;
     }
 
     .card-assumptions .assumption-title {
@@ -2287,13 +2248,7 @@
                 <span>Included</span>
               </div>
             </div>
-            <button class="expand-toggle" onclick="toggleAssumptions(this)">
-              Show assumptions
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div class="card-assumptions">
+                        <div class="card-assumptions">
               <div class="assumption-title">How we calculated this:</div>
               <ul>
                 <li><strong>Setup ${formatCurrency(nc5Year.setup)}:</strong> Standard prebuilt package implementation fee. Includes onboarding, training, and 8-week delivery by NextChapter team.</li>
@@ -2329,13 +2284,7 @@
                 <span>${formatCurrency(shopify5Year.apps)}</span>
               </div>
             </div>
-            <button class="expand-toggle" onclick="toggleAssumptions(this)">
-              Show assumptions
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div class="card-assumptions">
+                        <div class="card-assumptions">
               <div class="assumption-title">How we calculated this:</div>
               <ul>
                 <li><strong>Setup ${formatCurrency(shopify5Year.setup)}:</strong> Theme customization, data migration, and agency implementation. Shopify Plus requires certified partners.</li>
@@ -2372,13 +2321,7 @@
                 <span>${formatCurrency(magento5Year.apps)}</span>
               </div>
             </div>
-            <button class="expand-toggle" onclick="toggleAssumptions(this)">
-              Show assumptions
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div class="card-assumptions">
+                        <div class="card-assumptions">
               <div class="assumption-title">How we calculated this:</div>
               <ul>
                 <li><strong>Setup ${formatCurrency(magento5Year.setup)}:</strong> Custom development with no vendor support. Requires specialized Magento developers. Higher than SaaS due to complexity.</li>
@@ -2416,13 +2359,7 @@
                 <span>${formatCurrency(woo5Year.plugins)}</span>
               </div>
             </div>
-            <button class="expand-toggle" onclick="toggleAssumptions(this)">
-              Show assumptions
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div class="card-assumptions">
+                        <div class="card-assumptions">
               <div class="assumption-title">How we calculated this:</div>
               <ul>
                 <li><strong>Setup ${formatCurrency(woo5Year.setup)}:</strong> WordPress theme + WooCommerce customization. Lower upfront cost but limited enterprise features.</li>
@@ -2489,30 +2426,15 @@
         <div class="assumptions">
           <div class="assumptions-title">General Notes</div>
           <ul>
-            <li>Click "Show assumptions" on each card above for detailed calculation breakdown</li>
             <li>All estimates based on 2025 market rates for mid-market e-commerce operations</li>
             <li>B2B functionality adds ~30% complexity for platforms requiring custom development</li>
             <li>Transaction fees, GMV-based pricing tiers, and currency conversion costs not included</li>
+            <li>Actual costs may vary based on specific requirements and vendor negotiations</li>
           </ul>
         </div>
       `;
 
       document.getElementById('comparison-container').innerHTML = compHtml;
-    }
-
-    // Toggle assumptions visibility
-    function toggleAssumptions(button) {
-      const card = button.closest('.comparison-card');
-      const assumptions = card.querySelector('.card-assumptions');
-
-      button.classList.toggle('expanded');
-      assumptions.classList.toggle('visible');
-
-      if (assumptions.classList.contains('visible')) {
-        button.innerHTML = `Hide assumptions <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>`;
-      } else {
-        button.innerHTML = `Show assumptions <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>`;
-      }
     }
 
     // Initial calculation
