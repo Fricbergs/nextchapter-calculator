@@ -26,6 +26,9 @@
       --nc-gray-700: #334155;
       --nc-gray-800: #1e293b;
       --nc-gray-900: #0f172a;
+      --shopify-green: #96bf48;
+      --magento-orange: #f26322;
+      --shopware-blue: #189eff;
     }
 
     * {
@@ -190,6 +193,13 @@
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--nc-vulcano);
+    }
+
+    .card-subtitle {
+      font-size: 0.9rem;
+      color: var(--nc-gray-500);
+      margin-top: 0.25rem;
+      font-weight: 500;
     }
 
     /* Package Selection */
@@ -557,6 +567,254 @@
       font-weight: 500;
     }
 
+    /* Comparison Section */
+    .comparison-intro {
+      background: var(--nc-gray-50);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+      font-size: 0.875rem;
+      color: var(--nc-gray-600);
+    }
+
+    .comparison-intro strong {
+      color: var(--nc-vulcano);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .comparison-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .comparison-card {
+      border: 2px solid var(--nc-ash);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      background: var(--nc-white);
+    }
+
+    .comparison-card.nextchapter {
+      border-color: var(--nc-pine);
+      background: rgba(43, 153, 168, 0.04);
+    }
+
+    .comparison-card.recommended {
+      box-shadow: 0 0 0 4px rgba(43, 153, 168, 0.15);
+    }
+
+    .comparison-card .badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--nc-pine);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .comparison-logo {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .comparison-logo.nextchapter { color: var(--nc-pine); }
+    .comparison-logo.shopify { color: var(--shopify-green); }
+    .comparison-logo.magento { color: var(--magento-orange); }
+    .comparison-logo.shopware { color: var(--shopware-blue); }
+
+    .comparison-5year {
+      margin-bottom: 1rem;
+    }
+
+    .comparison-5year-label {
+      font-size: 0.75rem;
+      color: var(--nc-gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .comparison-5year-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--nc-vulcano);
+      letter-spacing: -0.02em;
+    }
+
+    .comparison-card.nextchapter .comparison-5year-value {
+      color: var(--nc-pine-dark);
+    }
+
+    .comparison-details {
+      font-size: 0.75rem;
+      color: var(--nc-gray-500);
+      text-align: left;
+      border-top: 1px solid var(--nc-ash);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .comparison-detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.375rem 0;
+    }
+
+    .comparison-detail-row span:last-child {
+      font-weight: 600;
+      color: var(--nc-gray-700);
+    }
+
+    /* Bar Chart */
+    .bar-chart {
+      margin: 2rem 0;
+    }
+
+    .bar-chart-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--nc-vulcano);
+      margin-bottom: 1.5rem;
+    }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .bar-label {
+      width: 100px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--nc-gray-700);
+      flex-shrink: 0;
+    }
+
+    .bar-container {
+      flex: 1;
+      height: 36px;
+      background: var(--nc-gray-100);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: white;
+      transition: width 0.5s ease;
+      min-width: fit-content;
+    }
+
+    .bar-fill.nextchapter { background: var(--nc-pine); }
+    .bar-fill.shopify { background: var(--shopify-green); }
+    .bar-fill.magento { background: var(--magento-orange); }
+    .bar-fill.shopware { background: var(--shopware-blue); }
+
+    .bar-value-outside {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--nc-gray-600);
+    }
+
+    /* Savings highlight */
+    .savings-box {
+      background: linear-gradient(135deg, rgba(43, 153, 168, 0.1) 0%, rgba(0, 190, 204, 0.05) 100%);
+      border: 2px solid var(--nc-pine);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .savings-title {
+      font-size: 0.875rem;
+      color: var(--nc-pine-dark);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .savings-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--nc-pine);
+      margin-bottom: 0.5rem;
+    }
+
+    .savings-desc {
+      font-size: 0.875rem;
+      color: var(--nc-gray-600);
+    }
+
+    /* Assumptions */
+    .assumptions {
+      background: var(--nc-gray-50);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--nc-gray-500);
+    }
+
+    .assumptions-title {
+      font-weight: 700;
+      color: var(--nc-gray-700);
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .assumptions ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .assumptions li {
+      margin-bottom: 0.375rem;
+    }
+
     /* Footer */
     .footer {
       text-align: center;
@@ -774,6 +1032,32 @@
         </div>
       </div>
     </div>
+
+    <!-- Platform Comparison -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-number">4</div>
+        <div>
+          <h2 class="card-title">5-Year TCO Platform Comparison</h2>
+          <p class="card-subtitle">Compare Total Cost of Ownership across enterprise e-commerce platforms</p>
+        </div>
+      </div>
+
+      <div class="comparison-intro">
+        <strong>How this comparison works:</strong> We calculate the 5-year Total Cost of Ownership (TCO) for each platform based on your NextChapter configuration above. Costs include license fees, implementation, hosting, maintenance, and typical app/extension expenses for a mid-market e-commerce operation.
+      </div>
+
+      <div id="comparison-container">
+        <div class="no-packages">
+          <div class="no-packages-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <p>Select at least one package above to see the platform comparison.</p>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- Footer -->
@@ -848,6 +1132,34 @@
       }
     };
 
+    // Competitor pricing (based on 2025/2026 market research)
+    const COMPETITOR_PRICING = {
+      shopify: {
+        name: 'Shopify Plus',
+        monthlyLicense: 2300, // €2,300/month (3-year contract)
+        implementation: 25000, // Custom development/setup
+        monthlyApps: 750, // Average app subscriptions
+        monthlyMaintenance: 500, // Agency retainer
+        transactionFeePercent: 0.15 // Third-party payment fee
+      },
+      magento: {
+        name: 'Adobe Commerce',
+        yearlyLicense: 40000, // Cloud starting price for mid-market
+        implementation: 150000, // Custom build (mid-range)
+        monthlyHosting: 0, // Included in Cloud
+        monthlyMaintenance: 3000, // Agency support
+        monthlyExtensions: 500
+      },
+      shopware: {
+        name: 'Shopware 6',
+        monthlyLicense: 1200, // Evolve tier (mid-market)
+        implementation: 45000, // Professional setup
+        monthlyHosting: 350, // Managed hosting
+        monthlyMaintenance: 1000, // Agency retainer
+        monthlyApps: 350 // Plugin costs
+      }
+    };
+
     function getSelectedPackages() {
       const packages = [];
       if (document.getElementById('pkg-online').checked) packages.push('Online');
@@ -857,7 +1169,16 @@
     }
 
     function formatCurrency(amount) {
-      return '€' + amount.toLocaleString('de-DE');
+      return '€' + Math.round(amount).toLocaleString('de-DE');
+    }
+
+    function formatCurrencyShort(amount) {
+      if (amount >= 1000000) {
+        return '€' + (amount / 1000000).toFixed(1) + 'M';
+      } else if (amount >= 1000) {
+        return '€' + Math.round(amount / 1000) + 'k';
+      }
+      return '€' + Math.round(amount).toLocaleString('de-DE');
     }
 
     function calculate() {
@@ -876,6 +1197,16 @@
               </svg>
             </div>
             <p>Select at least one package to see the breakdown.</p>
+          </div>
+        `;
+        document.getElementById('comparison-container').innerHTML = `
+          <div class="no-packages">
+            <div class="no-packages-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <p>Select at least one package above to see the platform comparison.</p>
           </div>
         `;
         discountBanner.classList.remove('visible');
@@ -990,6 +1321,242 @@
       `;
 
       document.getElementById('breakdown-container').innerHTML = html;
+
+      // Calculate 5-year TCO comparison
+      updateComparison(totalMonthly, totalSetup, numPackages);
+    }
+
+    function updateComparison(ncMonthly, ncSetup, numPackages) {
+      const months = 60; // 5 years
+
+      // Scale competitor costs based on complexity (number of packages)
+      const complexityMultiplier = numPackages > 1 ? 1 + (numPackages - 1) * 0.3 : 1;
+
+      // NextChapter 5-year TCO
+      const nc5Year = {
+        setup: ncSetup,
+        license: ncMonthly * months,
+        hosting: 0, // Included
+        maintenance: 0, // Included in license
+        apps: 0, // Core features included
+        total: ncSetup + (ncMonthly * months)
+      };
+
+      // Shopify Plus 5-year TCO
+      const shopify = COMPETITOR_PRICING.shopify;
+      const shopify5Year = {
+        setup: shopify.implementation * complexityMultiplier,
+        license: shopify.monthlyLicense * months,
+        hosting: 0, // Included
+        maintenance: shopify.monthlyMaintenance * months,
+        apps: shopify.monthlyApps * months * complexityMultiplier,
+        total: 0
+      };
+      shopify5Year.total = shopify5Year.setup + shopify5Year.license + shopify5Year.maintenance + shopify5Year.apps;
+
+      // Adobe Commerce 5-year TCO
+      const magento = COMPETITOR_PRICING.magento;
+      const magento5Year = {
+        setup: magento.implementation * complexityMultiplier,
+        license: magento.yearlyLicense * 5 * complexityMultiplier,
+        hosting: 0, // Included in Cloud
+        maintenance: magento.monthlyMaintenance * months,
+        apps: magento.monthlyExtensions * months,
+        total: 0
+      };
+      magento5Year.total = magento5Year.setup + magento5Year.license + magento5Year.maintenance + magento5Year.apps;
+
+      // Shopware 5-year TCO
+      const shopware = COMPETITOR_PRICING.shopware;
+      const shopware5Year = {
+        setup: shopware.implementation * complexityMultiplier,
+        license: shopware.monthlyLicense * months * complexityMultiplier,
+        hosting: shopware.monthlyHosting * months,
+        maintenance: shopware.monthlyMaintenance * months,
+        apps: shopware.monthlyApps * months,
+        total: 0
+      };
+      shopware5Year.total = shopware5Year.setup + shopware5Year.license + shopware5Year.hosting + shopware5Year.maintenance + shopware5Year.apps;
+
+      // Find max for bar chart scaling
+      const maxTotal = Math.max(nc5Year.total, shopify5Year.total, magento5Year.total, shopware5Year.total);
+
+      // Calculate savings
+      const avgCompetitor = (shopify5Year.total + magento5Year.total + shopware5Year.total) / 3;
+      const savings = avgCompetitor - nc5Year.total;
+      const savingsPercent = Math.round((savings / avgCompetitor) * 100);
+
+      // Build comparison HTML
+      let compHtml = `
+        <div class="comparison-grid">
+          <div class="comparison-card nextchapter recommended">
+            <div class="badge">Recommended</div>
+            <div class="comparison-logo nextchapter">NextChapter</div>
+            <div class="comparison-5year">
+              <div class="comparison-5year-label">5-Year TCO</div>
+              <div class="comparison-5year-value">${formatCurrencyShort(nc5Year.total)}</div>
+            </div>
+            <div class="comparison-details">
+              <div class="comparison-detail-row">
+                <span>Setup/Implementation</span>
+                <span>${formatCurrency(nc5Year.setup)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>License (60 mo)</span>
+                <span>${formatCurrency(nc5Year.license)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Hosting</span>
+                <span>Included</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Maintenance</span>
+                <span>Included</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-card">
+            <div class="comparison-logo shopify">Shopify Plus</div>
+            <div class="comparison-5year">
+              <div class="comparison-5year-label">5-Year TCO</div>
+              <div class="comparison-5year-value">${formatCurrencyShort(shopify5Year.total)}</div>
+            </div>
+            <div class="comparison-details">
+              <div class="comparison-detail-row">
+                <span>Setup/Implementation</span>
+                <span>${formatCurrency(shopify5Year.setup)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>License (60 mo)</span>
+                <span>${formatCurrency(shopify5Year.license)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Maintenance</span>
+                <span>${formatCurrency(shopify5Year.maintenance)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Apps/Plugins</span>
+                <span>${formatCurrency(shopify5Year.apps)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-card">
+            <div class="comparison-logo magento">Adobe Commerce</div>
+            <div class="comparison-5year">
+              <div class="comparison-5year-label">5-Year TCO</div>
+              <div class="comparison-5year-value">${formatCurrencyShort(magento5Year.total)}</div>
+            </div>
+            <div class="comparison-details">
+              <div class="comparison-detail-row">
+                <span>Setup/Implementation</span>
+                <span>${formatCurrency(magento5Year.setup)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>License (5 yr)</span>
+                <span>${formatCurrency(magento5Year.license)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Maintenance</span>
+                <span>${formatCurrency(magento5Year.maintenance)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Extensions</span>
+                <span>${formatCurrency(magento5Year.apps)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="comparison-card">
+            <div class="comparison-logo shopware">Shopware 6</div>
+            <div class="comparison-5year">
+              <div class="comparison-5year-label">5-Year TCO</div>
+              <div class="comparison-5year-value">${formatCurrencyShort(shopware5Year.total)}</div>
+            </div>
+            <div class="comparison-details">
+              <div class="comparison-detail-row">
+                <span>Setup/Implementation</span>
+                <span>${formatCurrency(shopware5Year.setup)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>License (60 mo)</span>
+                <span>${formatCurrency(shopware5Year.license)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Hosting</span>
+                <span>${formatCurrency(shopware5Year.hosting)}</span>
+              </div>
+              <div class="comparison-detail-row">
+                <span>Maintenance + Apps</span>
+                <span>${formatCurrency(shopware5Year.maintenance + shopware5Year.apps)}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bar-chart">
+          <div class="bar-chart-title">5-Year Total Cost of Ownership Comparison</div>
+
+          <div class="bar-row">
+            <div class="bar-label">NextChapter</div>
+            <div class="bar-container">
+              <div class="bar-fill nextchapter" style="width: ${(nc5Year.total / maxTotal * 100)}%">
+                ${formatCurrencyShort(nc5Year.total)}
+              </div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Shopify Plus</div>
+            <div class="bar-container">
+              <div class="bar-fill shopify" style="width: ${(shopify5Year.total / maxTotal * 100)}%">
+                ${formatCurrencyShort(shopify5Year.total)}
+              </div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Adobe Commerce</div>
+            <div class="bar-container">
+              <div class="bar-fill magento" style="width: ${(magento5Year.total / maxTotal * 100)}%">
+                ${formatCurrencyShort(magento5Year.total)}
+              </div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-label">Shopware 6</div>
+            <div class="bar-container">
+              <div class="bar-fill shopware" style="width: ${(shopware5Year.total / maxTotal * 100)}%">
+                ${formatCurrencyShort(shopware5Year.total)}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        ${savings > 0 ? `
+        <div class="savings-box">
+          <div class="savings-title">Potential 5-Year Savings with NextChapter</div>
+          <div class="savings-value">${formatCurrency(savings)}</div>
+          <div class="savings-desc">${savingsPercent}% lower TCO compared to average competitor cost</div>
+        </div>
+        ` : ''}
+
+        <div class="assumptions">
+          <div class="assumptions-title">Comparison Assumptions</div>
+          <ul>
+            <li><strong>Shopify Plus:</strong> €2,300/mo license (3-yr contract), €25k implementation, €750/mo apps, €500/mo agency support</li>
+            <li><strong>Adobe Commerce Cloud:</strong> €40k/yr license (mid-market GMV), €150k implementation, €3k/mo agency maintenance</li>
+            <li><strong>Shopware 6 Evolve:</strong> €1,200/mo license, €45k implementation, €350/mo hosting, €1k/mo maintenance, €350/mo plugins</li>
+            <li><strong>NextChapter:</strong> All-inclusive pricing with hosting and core features included</li>
+            <li>Multi-package configurations add ~30% complexity cost per additional package for competitors</li>
+            <li>Transaction fees and GMV-based pricing increases not included (would further increase competitor costs)</li>
+          </ul>
+        </div>
+      `;
+
+      document.getElementById('comparison-container').innerHTML = compHtml;
     }
 
     // Initial calculation
