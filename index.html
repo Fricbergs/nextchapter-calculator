@@ -1433,42 +1433,42 @@
           <div class="input-wrapper">
             <input type="number" id="products" value="5000" min="0" oninput="calculate()">
           </div>
-          <div class="input-hint"><span>5,000</span> included per package &bull; €59 per 5,000 extra</div>
+          <div class="input-hint"><span>5,000</span> included &bull; €59 per 5,000 extra</div>
         </div>
         <div class="input-group">
           <label for="conversions">Conversions / Month</label>
           <div class="input-wrapper">
             <input type="number" id="conversions" value="1000" min="0" oninput="calculate()">
           </div>
-          <div class="input-hint"><span>1,000</span> included per package &bull; €115 per 500 extra</div>
+          <div class="input-hint"><span>1,000</span> included &bull; €115 per 500 extra</div>
         </div>
         <div class="input-group">
           <label for="apiCalls">API Calls (peak per 15 min)</label>
           <div class="input-wrapper">
             <input type="number" id="apiCalls" value="1000" min="0" oninput="calculate()">
           </div>
-          <div class="input-hint"><span>1,000</span> included per package &bull; €39 per 1,000 extra</div>
+          <div class="input-hint"><span>1,000</span> included &bull; €39 per 1,000 extra</div>
         </div>
         <div class="input-group">
           <label for="stockLocations">Stock Locations</label>
           <div class="input-wrapper">
             <input type="number" id="stockLocations" value="25" min="0" oninput="calculate()">
           </div>
-          <div class="input-hint"><span>25</span> included per package &bull; €19 per location extra</div>
+          <div class="input-hint"><span>25</span> included &bull; €19 per location extra</div>
         </div>
         <div class="input-group">
           <label for="languages">Languages</label>
           <div class="input-wrapper">
             <input type="number" id="languages" value="2" min="0" oninput="calculate()">
           </div>
-          <div class="input-hint"><span>2</span> included per package &bull; €59 per language extra</div>
+          <div class="input-hint"><span>2</span> included &bull; €59 per language extra</div>
         </div>
         <div class="input-group">
           <label for="accounts">Accounts (Suite)</label>
           <div class="input-wrapper">
             <input type="number" id="accounts" value="2" min="0" oninput="calculate()">
           </div>
-          <div class="input-hint"><span>2</span> included per package &bull; €115 per account extra</div>
+          <div class="input-hint"><span>2</span> included &bull; €115 per account extra</div>
         </div>
         <div class="input-group">
           <label for="marketplaces">Marketplaces</label>
@@ -1482,7 +1482,7 @@
           <div class="input-wrapper">
             <input type="number" id="storefronts" value="1" min="0" oninput="calculate()">
           </div>
-          <div class="input-hint"><span>1</span> included per package &bull; No extra charge</div>
+          <div class="input-hint"><span>1</span> included &bull; No extra charge</div>
         </div>
       </div>
     </div>
@@ -1716,8 +1716,8 @@
         inputs[key] = parseInt(document.getElementById(key).value) || 0;
       }
 
-      // Calculate base fees
-      let baseMonthlyTotal = numPackages * PRICING.baseMonthly;
+      // Calculate base fees - ONE license covers all packages
+      let baseMonthlyTotal = PRICING.baseMonthly;
       let baseSetupTotal;
 
       // Check for Online + B2B discount
@@ -1729,19 +1729,20 @@
         baseSetupTotal = PRICING.discountedSetup;
         discountBanner.classList.add('visible');
       } else {
+        // Setup fee scales with packages
         baseSetupTotal = numPackages * PRICING.baseSetup;
         discountBanner.classList.remove('visible');
       }
 
-      // Calculate per-item costs (pooled across all packages)
+      // Calculate per-item costs (one license = one set of included amounts)
       const breakdown = [];
       let totalMonthlyAddOn = 0;
       let totalSetupAddOn = 0;
 
       for (const [key, config] of Object.entries(PRICING.items)) {
         const actual = inputs[key];
-        const pooledIncluded = config.included * numPackages;
-        const additional = Math.max(0, actual - pooledIncluded);
+        const included = config.included; // One license, one set of included amounts
+        const additional = Math.max(0, actual - included);
         const blocks = config.unitSize > 0 ? Math.ceil(additional / config.unitSize) : 0;
         const monthlyCost = blocks * config.unitPrice;
         const setupCost = blocks * config.setupPrice;
@@ -1752,7 +1753,7 @@
         breakdown.push({
           label: config.label,
           actual: actual,
-          pooledIncluded: pooledIncluded,
+          included: included,
           additional: additional,
           blocks: blocks,
           unitSize: config.unitSize,
@@ -1784,7 +1785,7 @@
           <tbody>
             <tr class="base-row">
               <td class="item-name"><strong>Base License</strong></td>
-              <td colspan="3">${packages.join(' + ')} (${numPackages} package${numPackages > 1 ? 's' : ''})</td>
+              <td colspan="3">${packages.join(' + ')}</td>
               <td class="monthly-cost">${formatCurrency(baseMonthlyTotal)}</td>
               <td class="setup-cost">${formatCurrency(baseSetupTotal)}</td>
             </tr>
@@ -1799,7 +1800,7 @@
           <tr>
             <td class="item-name">${item.label}</td>
             <td>${item.actual.toLocaleString()}</td>
-            <td>${item.pooledIncluded.toLocaleString()}</td>
+            <td>${item.included.toLocaleString()}</td>
             <td>${blocksText}</td>
             <td class="monthly-cost">${item.monthlyCost > 0 ? formatCurrency(item.monthlyCost) : '<span class="muted">—</span>'}</td>
             <td class="setup-cost">${item.setupCost > 0 ? formatCurrency(item.setupCost) : '<span class="muted">—</span>'}</td>
