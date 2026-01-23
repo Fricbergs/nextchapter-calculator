@@ -2939,6 +2939,12 @@
         </div>
       `;
 
+      // Add to DOM temporarily (required for html2pdf)
+      pdfContent.style.position = 'absolute';
+      pdfContent.style.left = '-9999px';
+      pdfContent.style.top = '0';
+      document.body.appendChild(pdfContent);
+
       // PDF options
       const opt = {
         margin: 0,
@@ -2948,8 +2954,10 @@
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
-      // Generate PDF
-      html2pdf().set(opt).from(pdfContent).save();
+      // Generate PDF then remove element
+      html2pdf().set(opt).from(pdfContent).save().then(() => {
+        document.body.removeChild(pdfContent);
+      });
     }
 
     function updateSlider(input) {
