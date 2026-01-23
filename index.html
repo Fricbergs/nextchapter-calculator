@@ -2790,127 +2790,86 @@
         configRows += '</tr>';
       }
 
-      // Create simple HTML content
-      const content = document.createElement('div');
-      content.id = 'pdf-content';
-      content.innerHTML =
-        '<div style="padding:40px;font-family:Arial,sans-serif;color:#333;background:white;">' +
+      // Build simple HTML string - avoid complex CSS like display:table
+      var htmlContent = '<div style="padding:30px;font-family:Arial,Helvetica,sans-serif;color:#333;background:#fff;width:100%;box-sizing:border-box;">' +
+        '<h1 style="color:#2b99a8;font-size:28px;margin:0 0 5px 0;border-bottom:3px solid #2b99a8;padding-bottom:15px;">NextChapter</h1>' +
+        '<p style="color:#666;margin:0 0 25px 0;">License Quote - ' + dateStr + '</p>' +
 
-        '<div style="border-bottom:3px solid #2b99a8;padding-bottom:20px;margin-bottom:30px;">' +
-        '<h1 style="margin:0;color:#2b99a8;font-size:32px;">NextChapter</h1>' +
-        '<p style="margin:5px 0 0 0;color:#666;">License Quote - ' + dateStr + '</p>' +
-        '</div>' +
+        '<h2 style="font-size:16px;margin:0 0 8px 0;">Selected Package</h2>' +
+        '<p style="font-size:20px;font-weight:bold;color:#2b99a8;margin:0 0 20px 0;">' + selection.displayName + '</p>' +
 
-        '<div style="margin-bottom:30px;">' +
-        '<h2 style="margin:0 0 10px 0;color:#333;font-size:18px;">Selected Package</h2>' +
-        '<p style="margin:0;font-size:24px;font-weight:bold;color:#2b99a8;">' + selection.displayName + '</p>' +
-        (selection.hasB2B ? '<p style="margin:5px 0 0 0;color:#2b99a8;">Includes combo discount on setup</p>' : '') +
+        '<div style="background:#2b99a8;color:#fff;padding:15px;margin-bottom:10px;">' +
+        '<p style="margin:0;font-size:11px;">MONTHLY LICENSE FEE</p>' +
+        '<p style="margin:5px 0;font-size:24px;font-weight:bold;">' + monthlyFee + '</p>' +
         '</div>' +
 
-        '<div style="display:table;width:100%;margin-bottom:30px;">' +
-        '<div style="display:table-cell;width:48%;background:#2b99a8;color:white;padding:20px;border-radius:8px;">' +
-        '<p style="margin:0 0 5px 0;font-size:12px;opacity:0.8;">MONTHLY LICENSE FEE</p>' +
-        '<p style="margin:0;font-size:28px;font-weight:bold;">' + monthlyFee + '</p>' +
-        '<p style="margin:5px 0 0 0;font-size:12px;opacity:0.8;">per month</p>' +
-        '</div>' +
-        '<div style="display:table-cell;width:4%;"></div>' +
-        '<div style="display:table-cell;width:48%;background:#f5f5f5;padding:20px;border-radius:8px;">' +
-        '<p style="margin:0 0 5px 0;font-size:12px;color:#666;">ONE-TIME SETUP</p>' +
-        '<p style="margin:0;font-size:28px;font-weight:bold;color:#333;">' + setupCost + '</p>' +
-        '<p style="margin:5px 0 0 0;font-size:12px;color:#666;">one-time payment</p>' +
-        '</div>' +
+        '<div style="background:#f0f0f0;padding:15px;margin-bottom:20px;">' +
+        '<p style="margin:0;font-size:11px;color:#666;">ONE-TIME SETUP</p>' +
+        '<p style="margin:5px 0;font-size:24px;font-weight:bold;color:#333;">' + setupCost + '</p>' +
         '</div>' +
 
-        '<div style="margin-bottom:30px;">' +
-        '<h2 style="margin:0 0 15px 0;color:#333;font-size:18px;">Configuration Details</h2>' +
-        '<table style="width:100%;border-collapse:collapse;font-size:14px;">' +
-        '<tr style="background:#f5f5f5;">' +
-        '<th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">Resource</th>' +
-        '<th style="padding:10px;text-align:center;border-bottom:2px solid #ddd;">Your Usage</th>' +
-        '<th style="padding:10px;text-align:center;border-bottom:2px solid #ddd;">Included</th>' +
-        '<th style="padding:10px;text-align:center;border-bottom:2px solid #ddd;">Extra</th>' +
-        '<th style="padding:10px;text-align:right;border-bottom:2px solid #ddd;">Monthly Cost</th>' +
+        '<h2 style="font-size:16px;margin:20px 0 10px 0;">Configuration Details</h2>' +
+        '<table style="width:100%;border-collapse:collapse;font-size:12px;">' +
+        '<tr style="background:#f0f0f0;">' +
+        '<th style="padding:8px;text-align:left;border:1px solid #ddd;">Resource</th>' +
+        '<th style="padding:8px;text-align:center;border:1px solid #ddd;">Your Usage</th>' +
+        '<th style="padding:8px;text-align:center;border:1px solid #ddd;">Included</th>' +
+        '<th style="padding:8px;text-align:center;border:1px solid #ddd;">Extra</th>' +
+        '<th style="padding:8px;text-align:right;border:1px solid #ddd;">Monthly Cost</th>' +
         '</tr>' +
         configRows +
         '</table>' +
+
+        '<div style="background:#f0f0f0;padding:15px;margin:20px 0;">' +
+        '<h2 style="font-size:16px;margin:0 0 10px 0;">Cost Projection</h2>' +
+        '<p style="margin:5px 0;">First Year Total: <strong>EUR ' + year1Total.toLocaleString() + '</strong></p>' +
+        '<p style="margin:5px 0;">5-Year TCO: <strong style="color:#2b99a8;">EUR ' + year5Total.toLocaleString() + '</strong></p>' +
         '</div>' +
 
-        '<div style="background:#f5f5f5;padding:20px;border-radius:8px;margin-bottom:30px;">' +
-        '<h2 style="margin:0 0 15px 0;color:#333;font-size:18px;">Cost Projection</h2>' +
-        '<p style="margin:0 0 10px 0;"><span style="color:#666;">First Year Total:</span> <strong style="font-size:18px;">EUR ' + year1Total.toLocaleString() + '</strong></p>' +
-        '<p style="margin:0;"><span style="color:#666;">5-Year TCO:</span> <strong style="font-size:18px;color:#2b99a8;">EUR ' + year5Total.toLocaleString() + '</strong></p>' +
-        '</div>' +
-
-        '<div style="margin-bottom:30px;">' +
-        '<h2 style="margin:0 0 15px 0;color:#333;font-size:18px;">What\'s Included</h2>' +
-        '<ul style="margin:0;padding:0 0 0 20px;color:#666;line-height:1.8;">' +
+        '<h2 style="font-size:16px;margin:20px 0 10px 0;">What\'s Included</h2>' +
+        '<ul style="margin:0;padding-left:20px;color:#666;font-size:12px;line-height:1.6;">' +
         '<li>Full NextChapter multix suite platform</li>' +
         '<li>Managed cloud hosting (AWS/Azure)</li>' +
         '<li>Automatic updates and security patches</li>' +
         '<li>24/7 monitoring and support</li>' +
         '<li>API access and integrations</li>' +
         '<li>PIM, OMS, WMS capabilities</li>' +
-        (selection.hasB2B ? '<li style="color:#2b99a8;font-weight:bold;">B2B portal and customer-specific pricing</li>' : '') +
         '</ul>' +
-        '</div>' +
 
-        '<div style="border-top:1px solid #ddd;padding-top:20px;margin-top:30px;color:#666;font-size:12px;">' +
-        '<p style="margin:0 0 5px 0;"><strong style="color:#333;">NextChapter</strong> - Enterprise E-commerce Platform</p>' +
-        '<p style="margin:0;">www.nextchapter-ecommerce.com</p>' +
-        '<p style="margin:15px 0 0 0;font-size:10px;color:#999;">This quote is for estimation purposes only. Prices in EUR, excluding VAT. Valid for 30 days.</p>' +
+        '<div style="border-top:1px solid #ddd;margin-top:25px;padding-top:15px;font-size:10px;color:#666;">' +
+        '<p style="margin:0;"><strong>NextChapter</strong> - Enterprise E-commerce Platform</p>' +
+        '<p style="margin:3px 0;">www.nextchapter-ecommerce.com</p>' +
+        '<p style="margin:10px 0 0 0;color:#999;">This quote is for estimation purposes only. Prices in EUR, excluding VAT. Valid for 30 days.</p>' +
         '</div>' +
-
         '</div>';
 
-      // Append to body - position off-screen to the left
+      // Create element and add to page
+      var content = document.createElement('div');
+      content.innerHTML = htmlContent;
       content.style.position = 'absolute';
-      content.style.left = '-9999px';
+      content.style.left = '0';
       content.style.top = '0';
-      content.style.width = '800px';
-      content.style.background = 'white';
+      content.style.width = '794px';
+      content.style.backgroundColor = '#ffffff';
       document.body.appendChild(content);
 
       // Check if html2pdf is loaded
       if (typeof html2pdf === 'undefined') {
-        alert('Error: PDF library not loaded. Please refresh the page.');
+        alert('PDF library not loaded. Please refresh the page.');
         document.body.removeChild(content);
         return;
       }
 
-      // Debug: log the content dimensions
-      console.log('Content dimensions:', content.offsetWidth, content.offsetHeight);
-      console.log('Content innerHTML length:', content.innerHTML.length);
-
-      // Wait for the element to render before generating PDF
-      setTimeout(function() {
-        // Move it on-screen temporarily for capture
-        content.style.left = '0';
-        content.style.top = '0';
-        content.style.zIndex = '99999';
-
-        setTimeout(function() {
-          html2pdf().set({
-            margin: 10,
-            filename: 'NextChapter-Quote-' + fileDate + '.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-              scale: 2,
-              logging: true,
-              useCORS: true,
-              windowWidth: 800,
-              windowHeight: content.scrollHeight
-            },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-          }).from(content).save().then(function() {
-            console.log('PDF generated successfully');
-            document.body.removeChild(content);
-          }).catch(function(error) {
-            console.error('PDF error:', error);
-            alert('Error generating PDF: ' + error.message);
-            document.body.removeChild(content);
-          });
-        }, 50);
-      }, 100);
+      // Generate PDF
+      html2pdf(content, {
+        margin: 10,
+        filename: 'NextChapter-Quote-' + fileDate + '.pdf',
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).then(function() {
+        document.body.removeChild(content);
+      });
     }
 
     function updateSlider(input) {
