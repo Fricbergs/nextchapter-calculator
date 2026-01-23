@@ -2862,7 +2862,12 @@
 
         '</div>';
 
-      // Append to body
+      // Append to body - position off-screen to the left
+      content.style.position = 'absolute';
+      content.style.left = '-9999px';
+      content.style.top = '0';
+      content.style.width = '800px';
+      content.style.background = 'white';
       document.body.appendChild(content);
 
       // Check if html2pdf is loaded
@@ -2872,23 +2877,40 @@
         return;
       }
 
-      // Generate PDF with simpler options
-      var worker = html2pdf().set({
-        margin: 10,
-        filename: 'NextChapter-Quote-' + fileDate + '.pdf',
-        image: { type: 'jpeg', quality: 0.95 },
-        html2canvas: { scale: 2, logging: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      }).from(content).save();
+      // Debug: log the content dimensions
+      console.log('Content dimensions:', content.offsetWidth, content.offsetHeight);
+      console.log('Content innerHTML length:', content.innerHTML.length);
 
-      worker.then(function() {
-        console.log('PDF generated successfully');
-        document.body.removeChild(content);
-      }).catch(function(error) {
-        console.error('PDF error:', error);
-        alert('Error generating PDF: ' + error.message);
-        document.body.removeChild(content);
-      });
+      // Wait for the element to render before generating PDF
+      setTimeout(function() {
+        // Move it on-screen temporarily for capture
+        content.style.left = '0';
+        content.style.top = '0';
+        content.style.zIndex = '99999';
+
+        setTimeout(function() {
+          html2pdf().set({
+            margin: 10,
+            filename: 'NextChapter-Quote-' + fileDate + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+              scale: 2,
+              logging: true,
+              useCORS: true,
+              windowWidth: 800,
+              windowHeight: content.scrollHeight
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          }).from(content).save().then(function() {
+            console.log('PDF generated successfully');
+            document.body.removeChild(content);
+          }).catch(function(error) {
+            console.error('PDF error:', error);
+            alert('Error generating PDF: ' + error.message);
+            document.body.removeChild(content);
+          });
+        }, 50);
+      }, 100);
     }
 
     function updateSlider(input) {
