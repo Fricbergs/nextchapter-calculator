@@ -2745,7 +2745,7 @@
       const dateStr = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
       const fileDate = today.toISOString().split('T')[0];
 
-      // Gather configuration values with extra cost info
+      // Gather configuration values
       const configItems = [];
       let totalMonthlyExtra = 0;
       let totalSetupExtra = 0;
@@ -2764,8 +2764,8 @@
           label: config.label,
           value: actual.toLocaleString(),
           included: config.included.toLocaleString(),
-          extra: additional > 0 ? '+' + additional.toLocaleString() : '—',
-          monthlyCost: monthlyCost > 0 ? '€' + monthlyCost.toLocaleString() : '—',
+          extra: additional > 0 ? '+' + additional.toLocaleString() : '-',
+          monthlyCost: monthlyCost > 0 ? 'EUR ' + monthlyCost.toLocaleString() : '-',
           isOver: actual > config.included
         });
       }
@@ -2777,163 +2777,103 @@
       const year1Total = setupTotalCalc + (monthlyTotal * 12);
       const year5Total = setupTotalCalc + (monthlyTotal * 60);
 
-      // Build configuration rows HTML
-      let configRowsHtml = '';
-      configItems.forEach(item => {
-        configRowsHtml += '<tr>' +
-          '<td style="padding:12px 15px;border:1px solid #e2e8f0;font-weight:500;">' + item.label + '</td>' +
-          '<td style="padding:12px 15px;border:1px solid #e2e8f0;text-align:center;font-weight:600;color:' + (item.isOver ? '#2b99a8' : '#13192d') + ';">' + item.value + '</td>' +
-          '<td style="padding:12px 15px;border:1px solid #e2e8f0;text-align:center;color:#64748b;">' + item.included + '</td>' +
-          '<td style="padding:12px 15px;border:1px solid #e2e8f0;text-align:center;color:' + (item.isOver ? '#dc2626' : '#94a3b8') + ';">' + item.extra + '</td>' +
-          '<td style="padding:12px 15px;border:1px solid #e2e8f0;text-align:right;font-weight:500;color:' + (item.monthlyCost !== '—' ? '#13192d' : '#94a3b8') + ';">' + item.monthlyCost + '</td>' +
-          '</tr>';
-      });
+      // Build config rows
+      let configRows = '';
+      for (let i = 0; i < configItems.length; i++) {
+        const item = configItems[i];
+        configRows += '<tr>';
+        configRows += '<td style="padding:10px;border-bottom:1px solid #ddd;">' + item.label + '</td>';
+        configRows += '<td style="padding:10px;border-bottom:1px solid #ddd;text-align:center;font-weight:bold;">' + item.value + '</td>';
+        configRows += '<td style="padding:10px;border-bottom:1px solid #ddd;text-align:center;color:#666;">' + item.included + '</td>';
+        configRows += '<td style="padding:10px;border-bottom:1px solid #ddd;text-align:center;">' + item.extra + '</td>';
+        configRows += '<td style="padding:10px;border-bottom:1px solid #ddd;text-align:right;">' + item.monthlyCost + '</td>';
+        configRows += '</tr>';
+      }
 
-      // B2B features row
-      const b2bFeaturesHtml = selection.hasB2B ?
-        '<tr><td style="padding:8px 0;color:#2b99a8;vertical-align:top;width:20px;">✓</td><td style="padding:8px 0;color:#2b99a8;font-weight:500;">B2B portal & customer-specific pricing</td><td style="padding:8px 0;color:#2b99a8;vertical-align:top;width:20px;">✓</td><td style="padding:8px 0;color:#2b99a8;font-weight:500;">Quote management & approval workflows</td></tr>' : '';
+      // Create simple HTML content
+      const content = document.createElement('div');
+      content.id = 'pdf-content';
+      content.innerHTML =
+        '<div style="padding:40px;font-family:Arial,sans-serif;color:#333;background:white;">' +
 
-      const b2bDiscountHtml = selection.hasB2B ?
-        '<p style="margin:8px 0 0 0;font-size:13px;color:#2b99a8;font-weight:500;">✓ Includes combo discount on setup</p>' : '';
-
-      // Create the PDF element
-      const pdfElement = document.createElement('div');
-      pdfElement.style.width = '210mm';
-      pdfElement.style.background = 'white';
-      pdfElement.style.fontFamily = 'Arial, Helvetica, sans-serif';
-
-      pdfElement.innerHTML =
-        '<div style="background:#2b99a8;padding:30px 40px;">' +
-          '<table style="width:100%;border-collapse:collapse;">' +
-            '<tr>' +
-              '<td style="vertical-align:middle;">' +
-                '<div style="font-size:26px;color:white;font-weight:700;">NextChapter</div>' +
-                '<div style="margin-top:5px;color:rgba(255,255,255,0.85);font-size:14px;">License Quote</div>' +
-              '</td>' +
-              '<td style="text-align:right;vertical-align:middle;">' +
-                '<div style="color:rgba(255,255,255,0.85);font-size:12px;">Generated</div>' +
-                '<div style="margin-top:4px;color:white;font-size:14px;font-weight:600;">' + dateStr + '</div>' +
-              '</td>' +
-            '</tr>' +
-          '</table>' +
+        '<div style="border-bottom:3px solid #2b99a8;padding-bottom:20px;margin-bottom:30px;">' +
+        '<h1 style="margin:0;color:#2b99a8;font-size:32px;">NextChapter</h1>' +
+        '<p style="margin:5px 0 0 0;color:#666;">License Quote - ' + dateStr + '</p>' +
         '</div>' +
 
-        '<div style="padding:40px;background:#ffffff;">' +
-
-          '<div style="margin-bottom:35px;">' +
-            '<div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:8px;">Selected Package</div>' +
-            '<div style="font-size:28px;font-weight:700;color:#13192d;">' + selection.displayName + '</div>' +
-            b2bDiscountHtml +
-          '</div>' +
-
-          '<table style="width:100%;border-collapse:collapse;margin-bottom:35px;">' +
-            '<tr>' +
-              '<td style="width:50%;padding-right:15px;vertical-align:top;">' +
-                '<div style="background:#2b99a8;padding:25px;border-radius:12px;">' +
-                  '<div style="font-size:12px;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">Monthly License Fee</div>' +
-                  '<div style="font-size:36px;font-weight:700;color:white;">' + monthlyFee + '</div>' +
-                  '<div style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.7);">per month</div>' +
-                '</div>' +
-              '</td>' +
-              '<td style="width:50%;padding-left:15px;vertical-align:top;">' +
-                '<div style="background:#f8fafc;padding:25px;border-radius:12px;border:1px solid #e2e8f0;">' +
-                  '<div style="font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px;">One-Time Setup</div>' +
-                  '<div style="font-size:36px;font-weight:700;color:#13192d;">' + setupCost + '</div>' +
-                  '<div style="margin-top:8px;font-size:12px;color:#94a3b8;">one-time payment</div>' +
-                '</div>' +
-              '</td>' +
-            '</tr>' +
-          '</table>' +
-
-          '<div style="margin-bottom:35px;">' +
-            '<div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:15px;">Configuration Details</div>' +
-            '<table style="width:100%;border-collapse:collapse;font-size:13px;">' +
-              '<thead>' +
-                '<tr style="background:#f8fafc;">' +
-                  '<th style="text-align:left;padding:12px 15px;border:1px solid #e2e8f0;color:#475569;font-weight:600;">Resource</th>' +
-                  '<th style="text-align:center;padding:12px 15px;border:1px solid #e2e8f0;color:#475569;font-weight:600;">Your Usage</th>' +
-                  '<th style="text-align:center;padding:12px 15px;border:1px solid #e2e8f0;color:#475569;font-weight:600;">Included</th>' +
-                  '<th style="text-align:center;padding:12px 15px;border:1px solid #e2e8f0;color:#475569;font-weight:600;">Extra</th>' +
-                  '<th style="text-align:right;padding:12px 15px;border:1px solid #e2e8f0;color:#475569;font-weight:600;">Monthly Cost</th>' +
-                '</tr>' +
-              '</thead>' +
-              '<tbody>' + configRowsHtml + '</tbody>' +
-            '</table>' +
-          '</div>' +
-
-          '<div style="background:#f8fafc;border-radius:12px;padding:25px;margin-bottom:35px;border:1px solid #e2e8f0;">' +
-            '<div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:15px;">Cost Projection</div>' +
-            '<table style="width:100%;border-collapse:collapse;">' +
-              '<tr>' +
-                '<td style="padding:8px 0;color:#475569;font-size:14px;">First Year Total</td>' +
-                '<td style="text-align:right;padding:8px 0;font-size:18px;font-weight:700;color:#13192d;">€' + year1Total.toLocaleString() + '</td>' +
-              '</tr>' +
-              '<tr>' +
-                '<td style="padding:8px 0;border-top:1px solid #e2e8f0;color:#475569;font-size:14px;">5-Year Total Cost of Ownership</td>' +
-                '<td style="text-align:right;padding:8px 0;border-top:1px solid #e2e8f0;font-size:18px;font-weight:700;color:#2b99a8;">€' + year5Total.toLocaleString() + '</td>' +
-              '</tr>' +
-            '</table>' +
-          '</div>' +
-
-          '<div style="margin-bottom:35px;">' +
-            '<div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:15px;">What\'s Included</div>' +
-            '<table style="width:100%;border-collapse:collapse;font-size:13px;">' +
-              '<tr><td style="padding:8px 0;color:#475569;vertical-align:top;width:20px;">✓</td><td style="padding:8px 0;color:#475569;">Full NextChapter multix suite platform</td><td style="padding:8px 0;color:#475569;vertical-align:top;width:20px;">✓</td><td style="padding:8px 0;color:#475569;">Managed cloud hosting (AWS/Azure)</td></tr>' +
-              '<tr><td style="padding:8px 0;color:#475569;vertical-align:top;">✓</td><td style="padding:8px 0;color:#475569;">Automatic updates & security patches</td><td style="padding:8px 0;color:#475569;vertical-align:top;">✓</td><td style="padding:8px 0;color:#475569;">24/7 monitoring & support</td></tr>' +
-              '<tr><td style="padding:8px 0;color:#475569;vertical-align:top;">✓</td><td style="padding:8px 0;color:#475569;">API access & integrations</td><td style="padding:8px 0;color:#475569;vertical-align:top;">✓</td><td style="padding:8px 0;color:#475569;">PIM, OMS, WMS capabilities</td></tr>' +
-              b2bFeaturesHtml +
-            '</table>' +
-          '</div>' +
-
+        '<div style="margin-bottom:30px;">' +
+        '<h2 style="margin:0 0 10px 0;color:#333;font-size:18px;">Selected Package</h2>' +
+        '<p style="margin:0;font-size:24px;font-weight:bold;color:#2b99a8;">' + selection.displayName + '</p>' +
+        (selection.hasB2B ? '<p style="margin:5px 0 0 0;color:#2b99a8;">Includes combo discount on setup</p>' : '') +
         '</div>' +
 
-        '<div style="background:#13192d;padding:25px 40px;">' +
-          '<table style="width:100%;border-collapse:collapse;">' +
-            '<tr>' +
-              '<td style="vertical-align:middle;">' +
-                '<div style="color:white;font-size:14px;font-weight:600;">NextChapter</div>' +
-                '<div style="margin-top:5px;color:rgba(255,255,255,0.6);font-size:12px;">Enterprise E-commerce Platform</div>' +
-              '</td>' +
-              '<td style="text-align:right;vertical-align:middle;">' +
-                '<div style="color:rgba(255,255,255,0.8);font-size:12px;">www.nextchapter-ecommerce.com</div>' +
-                '<div style="margin-top:5px;color:rgba(255,255,255,0.6);font-size:11px;">Contact us for a personalized demo</div>' +
-              '</td>' +
-            '</tr>' +
-          '</table>' +
+        '<div style="display:table;width:100%;margin-bottom:30px;">' +
+        '<div style="display:table-cell;width:48%;background:#2b99a8;color:white;padding:20px;border-radius:8px;">' +
+        '<p style="margin:0 0 5px 0;font-size:12px;opacity:0.8;">MONTHLY LICENSE FEE</p>' +
+        '<p style="margin:0;font-size:28px;font-weight:bold;">' + monthlyFee + '</p>' +
+        '<p style="margin:5px 0 0 0;font-size:12px;opacity:0.8;">per month</p>' +
+        '</div>' +
+        '<div style="display:table-cell;width:4%;"></div>' +
+        '<div style="display:table-cell;width:48%;background:#f5f5f5;padding:20px;border-radius:8px;">' +
+        '<p style="margin:0 0 5px 0;font-size:12px;color:#666;">ONE-TIME SETUP</p>' +
+        '<p style="margin:0;font-size:28px;font-weight:bold;color:#333;">' + setupCost + '</p>' +
+        '<p style="margin:5px 0 0 0;font-size:12px;color:#666;">one-time payment</p>' +
+        '</div>' +
         '</div>' +
 
-        '<div style="padding:20px 40px;background:#f8fafc;">' +
-          '<div style="font-size:10px;color:#94a3b8;line-height:1.5;">This quote is for estimation purposes only. Final pricing may vary based on specific requirements, implementation complexity, and contract terms. Prices are in EUR and exclude VAT. Quote valid for 30 days from generation date.</div>' +
+        '<div style="margin-bottom:30px;">' +
+        '<h2 style="margin:0 0 15px 0;color:#333;font-size:18px;">Configuration Details</h2>' +
+        '<table style="width:100%;border-collapse:collapse;font-size:14px;">' +
+        '<tr style="background:#f5f5f5;">' +
+        '<th style="padding:10px;text-align:left;border-bottom:2px solid #ddd;">Resource</th>' +
+        '<th style="padding:10px;text-align:center;border-bottom:2px solid #ddd;">Your Usage</th>' +
+        '<th style="padding:10px;text-align:center;border-bottom:2px solid #ddd;">Included</th>' +
+        '<th style="padding:10px;text-align:center;border-bottom:2px solid #ddd;">Extra</th>' +
+        '<th style="padding:10px;text-align:right;border-bottom:2px solid #ddd;">Monthly Cost</th>' +
+        '</tr>' +
+        configRows +
+        '</table>' +
+        '</div>' +
+
+        '<div style="background:#f5f5f5;padding:20px;border-radius:8px;margin-bottom:30px;">' +
+        '<h2 style="margin:0 0 15px 0;color:#333;font-size:18px;">Cost Projection</h2>' +
+        '<p style="margin:0 0 10px 0;"><span style="color:#666;">First Year Total:</span> <strong style="font-size:18px;">EUR ' + year1Total.toLocaleString() + '</strong></p>' +
+        '<p style="margin:0;"><span style="color:#666;">5-Year TCO:</span> <strong style="font-size:18px;color:#2b99a8;">EUR ' + year5Total.toLocaleString() + '</strong></p>' +
+        '</div>' +
+
+        '<div style="margin-bottom:30px;">' +
+        '<h2 style="margin:0 0 15px 0;color:#333;font-size:18px;">What\'s Included</h2>' +
+        '<ul style="margin:0;padding:0 0 0 20px;color:#666;line-height:1.8;">' +
+        '<li>Full NextChapter multix suite platform</li>' +
+        '<li>Managed cloud hosting (AWS/Azure)</li>' +
+        '<li>Automatic updates and security patches</li>' +
+        '<li>24/7 monitoring and support</li>' +
+        '<li>API access and integrations</li>' +
+        '<li>PIM, OMS, WMS capabilities</li>' +
+        (selection.hasB2B ? '<li style="color:#2b99a8;font-weight:bold;">B2B portal and customer-specific pricing</li>' : '') +
+        '</ul>' +
+        '</div>' +
+
+        '<div style="border-top:1px solid #ddd;padding-top:20px;margin-top:30px;color:#666;font-size:12px;">' +
+        '<p style="margin:0 0 5px 0;"><strong style="color:#333;">NextChapter</strong> - Enterprise E-commerce Platform</p>' +
+        '<p style="margin:0;">www.nextchapter-ecommerce.com</p>' +
+        '<p style="margin:15px 0 0 0;font-size:10px;color:#999;">This quote is for estimation purposes only. Prices in EUR, excluding VAT. Valid for 30 days.</p>' +
+        '</div>' +
+
         '</div>';
 
-      // Add to DOM (required for html2pdf)
-      pdfElement.style.position = 'fixed';
-      pdfElement.style.left = '0';
-      pdfElement.style.top = '0';
-      pdfElement.style.zIndex = '-9999';
-      document.body.appendChild(pdfElement);
+      // Append to body
+      document.body.appendChild(content);
 
-      // PDF options
-      const opt = {
-        margin: 0,
+      // Generate PDF with simpler options
+      html2pdf(content, {
+        margin: 10,
         filename: 'NextChapter-Quote-' + fileDate + '.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          logging: true,
-          width: pdfElement.offsetWidth,
-          height: pdfElement.offsetHeight
-        },
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: { scale: 2 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      // Generate PDF
-      html2pdf().set(opt).from(pdfElement).save().then(function() {
-        document.body.removeChild(pdfElement);
-      }).catch(function(err) {
-        console.error('PDF generation error:', err);
-        document.body.removeChild(pdfElement);
+      }).then(function() {
+        document.body.removeChild(content);
       });
     }
 
